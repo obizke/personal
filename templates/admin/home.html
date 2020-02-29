@@ -1,0 +1,183 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-body-content w-100 ets-pt">
+<div class="row">
+    <div class="col-md-3">
+      <div class="card-counter primary">
+        <i class="glyphicon glyphicon-dashboard"></i>
+        <span class="count-numbers">12</span>
+        <span class="count-name">Dashboard</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter danger">
+        <i class="glyphicon glyphicon-shopping-cart"></i>
+        <span class="count-numbers">599</span>
+        <span class="count-name">sales</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter success">
+        <i class="glyphicon glyphicon-comment"></i>
+        <span class="count-numbers">{{ contacts.count }}</span>
+        <span class="count-name">message{{ contacts|pluralize }}</span>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card-counter info">
+        <i class=" glyphicon glyphicon-user"></i>
+        <span class="count-numbers">{{ count }}</span>
+        <span class="count-name">Users</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-6">
+          <div class="card">
+              <div class="card-body">
+                  <h4 class="card-title">Latest Posts</h4>
+              </div>
+              {% if blogs.all %}
+              {% for blog in blogs %}
+              <div class="comment-widgets scrollable">
+                  <!-- Comment Row -->
+
+                  <div class="d-flex flex-row comment-row m-t-0">
+
+                      <div class="comment-text w-100">
+                          <h6 class="font-medium">{{ blog.author.user }}</h6>
+                          <span class="m-b-15 d-block">{{ blog.title }} </span>
+                          <div class="comment-footer">
+                              <span class="text-muted float-right">{{ blog.created }}</span>
+                              <br><br>
+                              <a href="{% url 'update_post' blog.id %}" class="btn btn-success btn-sm" type="buttom">Update</a>
+                              <a href="{% url 'delete_post' blog.id %}"class="btn btn-danger btn-sm" type="button">Delete</a>
+
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+                {% endfor %}
+
+              {% else %}
+              no blog yet
+          {% endif %}
+
+          </div>
+      </div>
+
+   <div class="jumbotron col-md-6">
+       <div class="jumbotron-fluid">
+           <h4 class="card-title m-b-0">  Activities Bar</h4>
+           <div class="m-t-20">
+               <div class="d-flex no-block align-items-center">
+                   <span>{{ count }}% users</span>
+                   <div class="ml-auto">
+                       <span>125</span>
+                   </div>
+               </div>
+               <div class="progress">
+                   <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 81%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+           </div>
+           <div>
+               <div class="d-flex no-block align-items-center m-t-25">
+                   <span>{{ contacts.count }}% messages</span>
+                   {% for contact in contacts  %}
+                   <div class="ml-auto">
+                       <span>{{ contact.count }}</span>
+                   </div>
+                   {%  endfor %}
+               </div>
+               <div class="progress">
+                   <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 72%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+           </div>
+           <div>
+               <div class="d-flex no-block align-items-center m-t-25">
+                   <span>53% Impressions</span>
+                   <div class="ml-auto">
+                       <span>785</span>
+                   </div>
+               </div>
+               <div class="progress">
+                   <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 53%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+           </div> <div class="ui-icon-image blog-image">
+                      <img src="{{ blog.image.url }}">
+                      </div>
+           <div>
+               <div class="d-flex no-block align-items-center m-t-25">
+                   <span>3% Online Users</span>
+                   <div class="ml-auto">
+                       <span>8</span>
+                   </div>
+               </div>
+               <div class="progress">
+                   <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 3%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+               </div>
+           </div>
+       </div>
+   </div>
+  </div>
+
+
+
+<div class="span7">
+<div class="widget stacked widget-table action-table">
+
+				<div class="widget-header">
+					<i class="icon-th-list"></i>
+					<h3>products</h3>
+				</div> <!-- /widget-header -->
+
+				<div class="widget-content">
+
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>title</th>
+								<th>category</th>
+                                <th>availability</th>
+                                <th>price</th>
+                                <th>update</th>
+                                <th>delete</th>
+
+							</tr>
+						</thead>
+						<tbody>
+                        {% for item in items %}
+							<tr>
+								<td>{{ item.title }}</td>
+                                {% for ct in item.category.all %}
+								<td>{{ ct}}</td>
+                                    {% endfor %}
+                                <td>{{ item.availability }}</td>
+                                <td>{{ item.price }}</td>
+                                <td><a href="{% url 'update_product' item.id %}" type="submit" class="btn btn-success">Update</a> </td>
+                                <td><a href="{% url 'delete_product' item.id %}" type="submit" class="btn btn-danger">Delete</a> </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">No data</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+						</table>
+
+				</div> <!-- /widget-content -->
+
+			</div> <!-- /widget -->
+            </div>
+
+{% include 'admin/footer.html' %}
+</div>
+
+{% endblock content %}

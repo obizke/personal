@@ -1,0 +1,75 @@
+{% load static %}
+
+<div class="col-lg-4">
+                        <div class="blog_right_sidebar">
+                            <aside class="single_sidebar_widget search_widget">
+                                <form action="{% url 'results' %}">
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="q" class="form-control" placeholder="Search Keyword">
+                                            <div class="input-group-append">
+                                                <button class="btn" type="submit" ><i class="ti-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </aside>
+                            <aside class="single_sidebar_widget post_category_widget">
+                                <h4 class="widget_title">Category</h4>
+                        <ul class="list cat-list">
+                            {% for cat in category_count %}
+                            <li>
+                                <a href="#" class="d-flex">
+                                    <p>{{ cat.categories__title }}</p>
+                                    <p>  ({{ cat.categories__title__count }})</p>
+                                </a>
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+                      </aside>
+
+                      <aside class="single_sidebar_widget popular_post_widget">
+                          <h3 class="widget_title ">Recent Post</h3>
+
+                       {% for post in recent %}
+                          <div class="media post_item">
+
+                              <div class="images" style="border: 1px solid #ddd; border-radius: 4px;padding: 5px;width: 50px;"><img src="{{ post.image.url }}" alt="..." class="img-fluid"></div>
+                              <div class="media-body">
+                                  <a href="{% url 'details' post.id %}">
+                                      <h3>{{ post.title }}</h3>
+                                  </a>
+                                  <p>{{ post.created|timesince }} ago</p>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </aside>
+                      <aside class="single_sidebar_widget tag_cloud_widget">
+                          <h4 class="widget_title">Tag Clouds</h4>
+                          <ul class="list">
+                              {% for cat in category_count %}
+                              <li>
+                                  <a href="#">{{ cat.categories__title }}</a>
+
+                              {% endfor %}
+                              </li>
+                          </ul>
+                      </aside>
+
+
+                      <aside class="single_sidebar_widget newsletter_widget">
+                        <h4 class="widget_title">Newsletter</h4>
+
+                        <form action="#">
+                          <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Enter email">
+                          </div>
+                          <div class="input-group-append">
+                              <button class="btn" type="submit" >submit</button>
+                          </div>
+                        </form>
+                      </aside>
+                  </div>
+                            </div>

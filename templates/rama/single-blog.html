@@ -1,0 +1,186 @@
+{% extends 'rama/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+          <div
+            class="banner_content d-md-flex justify-content-between align-items-center"
+          >
+            <div class="mb-3 mb-md-0">
+              <h2>Blog Details</h2>
+              <p>Very us move be blessed multiply night</p>
+            </div>
+            <div class="page_link">
+              <a href="{% url 'index' %}">Home</a>
+              <a href="{% url 'blog' %}">Blog </a>
+              <a href="{% url 'details' blogs.id %}">Blog Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+    <!--================Blog Area =================-->
+        <section class="blog_area single-post-area section_gap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 posts-list">
+                        <div class="single-post">
+                            <div class="feature-img">
+                                <img class="img-fluid" src="{{ blogs.image.url }}" alt="">
+                            </div>
+                            <div class="blog_details">
+                                <h2>{{ blogs.title }}</h2>
+                                <ul class="blog-info-link mt-3 mb-4">
+                                    <li><a href="#"><i class="ti-user"></i> Travel, Lifestyle</a></li>
+                                    <li><a href="#"><i class="ti-comments"></i> {{ blogs.comments.count }} Comment{{ blogs.comments.count|pluralize }}</a></li>
+                                </ul>
+                                <p class="excert">
+                                   {{ blogs.content|safe }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="navigation-top">
+                            <div class="d-sm-flex justify-content-between text-center">
+                                <p class="like-info"><span class="align-middle"><i class="ti-comment"></i></span>{{ blogs.comments.count }} comment{{ blogs.comments.count|pluralize }}</p>
+                                <div class="col-sm-4 text-center my-2 my-sm-0">
+
+                                </div>
+                                <ul class="social-icons">
+                                    <li><a href="#"><i class="ti-facebook"></i></a></li>
+                                    <li><a href="#"><i class="ti-twitter-alt"></i></a></li>
+                                </ul>
+                            </div>
+
+                    <div class="navigation-area">
+
+                        <div class="row">
+                            {% if blogs.previous_post %}
+                            <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+
+                                <div class="thumb" style="border: 1px solid #ddd; border-radius: 4px;padding: 5px;width: 50px;" >
+                                    <a href="{{ blogs.previous_post.get_absolute_url }}">
+                                        <img class="img-fluid" src="{{ blogs.previous_post.image.url }}" alt="">
+
+                                    </a>
+                                </div>
+                                <div class="arrow">
+                                    <a   href="{{ blogs.previous_post.get_absolute_url }}">
+                                        <span class="ti-arrow-left text-white"></span>
+                                    </a>
+                                </div>
+                                <div class="detials">
+                                    <p>Prev Post</p>
+                                    <a href="{{ blogs.previous_post.get_absolute_url }}">
+                                        <h4>{{ blogs.previous_post }}</h4>
+                                    </a>
+                                </div>
+                            </div>
+                           {% endif %}
+                            {% if blogs.next_post %}
+                            <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                <div class="detials">
+                                    <p>Next Post</p>
+                                    <a href="{{ blogs.next_post.get_absolute_url }}">
+                                        <h4>{{ blogs.next_post }}</h4>
+                                    </a>
+                                </div>
+                                <div class="arrow">
+                                    <a href="{{ blogs.next_post.get_absolute_url }}">
+                                        <span class="ti-arrow-right text-white"></span>
+                                    </a>
+                                </div>
+                                <div class="thumb" style="border: 1px solid #ddd; border-radius: 4px;padding: 5px;width: 50px;" >
+                                    <a href="{{ blogs.next_post.get_absolute_url }}">
+                                        <img class="img-fluid" src="{{ blogs.next_post.image.url }}" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                  </div>
+                        <div class="comments-area">
+                            {% for comment in blogs.get_comments %}
+                                <div class="comment-list">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <img src="{{ comment.user.author.profile.url }}" alt="...">
+                                            </div>
+                                            <div class="desc">
+
+                                                <p class="comment">
+                                                    {{ comment.content }}
+                                                </p>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex align-items-center">
+                                                        <h5>
+                                                            <a href="#">{{ comment.user.username }}</a>
+                                                        </h5>
+                                                        <p class="date">{{ comment.timestamp }} </p>
+                                                    </div>
+
+                                                    <div class="reply-btn">
+                                                        <a href="#" class="btn-reply text-uppercase">reply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="jumbotron">
+                                <div class="jumbotron-fluid">
+                                    No comment yet!!!
+                                </div>
+
+                                </div>
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="comment-form">
+                            <h4>Leave a Reply</h4>
+                            {% if request.user.is_authenticated %}
+                            <form method="post" class="form-contact contact_form" novalidate>
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            {{ form.content|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-lg-3">
+                                        <button type="submit" class="main_btn">Send Message</button>
+                                    </div>
+                                </div>
+                            </form>
+                                {% else %}
+                                <div class="jumbotron">
+                                <div class="jumbotron-fluid">
+                                    <strong>login to comment!!!</strong>
+                                </div>
+
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% include 'rama/sidebar.html' %}
+					</div>
+			</div>
+	</section>
+	<!--================Blog Area =================-->
+
+
+
+
+
+{% endblock content %}

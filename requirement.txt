@@ -1,0 +1,15 @@
+asgiref==3.2.3
+bootstrap-admin==0.4.3
+Django==3.0.3
+django-crispy-forms==1.8.1
+django-email-users==1.1.0
+django-filter==2.2.0
+django-tinymce4-lite==1.7.5
+django-widget-tweaks==1.4.5
+jsmin==2.2.2
+mysqlclient==1.4.6
+Pillow==7.0.0
+pyenchant==2.0.0
+pytz==2019.3
+signals==0.0.2
+sqlparse==0.3.0

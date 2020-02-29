@@ -1,0 +1,14 @@
+
+{% extends 'rama/base.html' %}
+{% load static %}
+{% block content  %}
+
+     <h2>This is the result of your search</h2>
+    {% for post in queryset %}
+        <a href="{% url 'details' post.id %}">{{ post.title }}</a>
+        <br>
+    {% empty %}
+        <h3>No results found</h3>
+    {% endfor %}
+
+{% endblock content %}

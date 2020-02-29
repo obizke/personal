@@ -1,0 +1,22 @@
+
+{% extends 'admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="main-body-content w-100 ets-pt">
+    <div class="jumbotron">
+        <div class="jumbotron-fluid">
+            <p>Are you sure you want to delete ??</p>
+          <form method="post" action="{% url 'delete_product' item.id %}">
+              {% csrf_token %}
+        <a href="{% url 'contact' %}">cancel</a>
+              <div style="justify-content: flex-end">
+                  <button type="submit" name="confirm" class="btn btn-danger">Delete</button>
+              </div>
+
+        </form>
+        </div>
+    </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="main-body-content w-100 ets-pt">
+
+<div class="container">
+
+<div class="row" >
+        <div class="col-md-12">
+            <div class="jumbotron">
+
+            {% for cont in contact %}
+                    <div class="jumbotron-fluid">
+                    <span class="glyphicon glyphicon-list"></span>Select message to delete
+                    <div class="pull-right action-buttons">
+                        <div class="btn-group pull-right">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-cog" style="margin-right: 0px;"></span>
+                            </button>
+                            <ul class="dropdown-menu slidedown">
+{#                                <li><a href="{% url 'delete_contact' cont.id %}"><span class="glyphicon glyphicon-trash"></span>Delete</a></li>#}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox" />
+                                <label for="checkbox">
+                                    {{ cont.message }}
+                                </label>
+                            </div>
+                            <div class="pull-right action-buttons">
+                                <a href="{% url 'delete_contact' cont.id %}" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {% endfor %}
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>
+                                Total Count <span class="label label-info">{{ count }}</span></h6>
+                        </div>
+                        <div class="col-md-6">
+                            {% if contact.has_other_pages %}
+                                <ul class="pagination">
+                                    {% if contact.has_previous %}
+                                        <li><a href="?page={{ contact.previous_page_number }}">&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&laquo;</span></li>
+                                    {% endif %}
+                                    {% for i in contact.paginator.page_range %}
+                                        {% if contact.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                        {% else %}
+                                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if contact.has_next %}
+                                        <li><a href="?page={{ contact.next_page_number }}">&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&raquo;</span></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock content %}

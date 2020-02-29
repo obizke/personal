@@ -1,0 +1,93 @@
+{% extends 'rama/base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="container">
+          <div
+            class="banner_content d-md-flex justify-content-between align-items-center"
+          >
+            <div class="mb-3 mb-md-0">
+              <h2>Blog</h2>
+              <p>Very us move be blessed multiply night</p>
+            </div>
+            <div class="page_link">
+              <a href="{% url 'index' %}">Home</a>
+              <a href="{% url 'blog' %}">Blog </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+  <!--================Blog Area =================-->
+  <section class="blog_area section_gap">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-8 mb-5 mb-lg-0">
+                  <div class="blog_left_sidebar">
+
+                      {% for blog in blog_info %}
+                      <article class="blog_item">
+                        <div class="blog_item_img">
+                          <img class="card-img rounded-0" src="{{ blog.image.url }}" alt="">
+                          <a href="#" class="blog_item_date">
+                            <h3>15</h3>
+                            <p>Jan</p>
+                          </a>
+                        </div>
+                        
+                        <div class="blog_details">
+                            <a class="d-inline-block" href="{% url 'details' blog.id %}">
+                                <h2>{{ blog.title }}</h2>
+                            </a>
+                            <p>{{ blog.content|safe|striptags|truncatechars:200 }}</p>
+                            <ul class="blog-info-link">
+                              <li>
+                                  {% for cm in blog.categories.all %}
+                                  <a href="{% url 'details' blog.id %}">
+                                      <i class="ti-user">
+
+                                      </i> {{ cm }}</a>
+                                      {% endfor %}
+                                  </li>
+                              <li><a href="{% url 'details' blog.id %}"><i class="ti-comments"></i>{{ blog.comments.count }}</a></li>
+                            </ul>
+                        </div>
+                      </article>
+                      {% endfor %}
+
+                      <nav class="blog-pagination justify-content-center d-flex">
+                           {% if blog_info.has_other_pages %}
+                                <ul class="pagination">
+                                    {% if blog_info.has_previous %}
+                                        <li><a href="?page={{ blog_info.previous_page_number }}">&laquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&laquo;</span></li>
+                                    {% endif %}
+                                    {% for i in blog_info.paginator.page_range %}
+                                        {% if blog_info.number == i %}
+                                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                        {% else %}
+                                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if blog_info.has_next %}
+                                        <li><a href="?page={{ blog_info.next_page_number }}">&raquo;</a></li>
+                                    {% else %}
+                                        <li class="disabled"><span>&raquo;</span></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                      </nav>
+                  </div>
+              </div>
+         {% include 'rama/sidebar.html' %}
+          </div>
+      </div>
+  </section>
+
+{% endblock content %}
